@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import '../styling/Chat.css'
 import { Avatar, IconButton } from '@material-ui/core'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
@@ -13,6 +13,14 @@ import axios from '../axios';
 function Chat({messages}) {
     
     const [text, setText] = useState('')
+
+    const Ref = useRef(null)
+
+    const scrollToBottom = () => {
+        Ref.current.scrollIntoView({ behavior: "smooth", block: "end" })
+    }
+
+    useEffect(scrollToBottom, [messages]);
 
     const sendMessage = (e) => {
         e.preventDefault()
@@ -49,31 +57,31 @@ function Chat({messages}) {
 
             {/* chat body */}
             <div className="is-flex" style={{backgroundImage: `url(${background})`, flex: 1, padding: "30px", flexDirection: "column", overflow: "auto"}}>
-                
-                {
-                    messages.map(message => {
-                            if(message.received) {
-                                return (
-                                    <div className="is-flex" style={{flexDirection: "column"}}>
-                                        <p style={{fontWeight: "bold", height: "fit-content", color: "whitesmoke", fontSize: "16px", marginLeft: "5px"}}>{message.name}</p>
-                                        <p style={{width: "fit-content", background: "white", padding: "2px 10px", fontSize: "16px", borderRadius: "10px", height: "fit-content", marginBottom: "10px"}}>
-                                            {message.message}<span style={{fontSize: "10px", marginLeft: "10px"}}>{message.timestamp}</span>
-                                        </p>
-                                    </div>
-                                )            
-                            } else {
-                                return (
-                                    <div className="is-flex" style={{flexDirection: "column", marginLeft: "auto"}}>
-                                        <p style={{fontWeight: "bold", height: "fit-content", color: "whitesmoke", fontSize: "16px", marginLeft: "5px"}}>{message.name}</p>
-                                        <p style={{width: "fit-content", background: "#dcf8c6", padding: "2px 10px", fontSize: "16px", borderRadius: "10px", height: "fit-content", marginBottom: "10px"}}>
-                                            {message.message}<span style={{fontSize: "10px", marginLeft: "10px"}}>{message.timestamp}</span>
-                                        </p>
-                                    </div>
-                                )
-                            }
+            {
+                messages.map(message => {
+                        if(message.received) {
+                            return (
+                                <div className="is-flex" style={{flexDirection: "column"}}>
+                                    <p style={{fontWeight: "bold", height: "fit-content", color: "whitesmoke", fontSize: "16px", marginLeft: "5px"}}>{message.name}</p>
+                                    <p style={{width: "fit-content", background: "white", padding: "2px 10px", fontSize: "16px", borderRadius: "10px", height: "fit-content", marginBottom: "10px"}}>
+                                        {message.message}<span style={{fontSize: "10px", marginLeft: "10px"}}>{message.timestamp}</span>
+                                    </p>
+                                </div>
+                            )            
+                        } else {
+                            return (
+                                <div className="is-flex" style={{flexDirection: "column", marginLeft: "auto"}}>
+                                    <p style={{fontWeight: "bold", height: "fit-content", color: "whitesmoke", fontSize: "16px", marginLeft: "5px"}}>{message.name}</p>
+                                    <p style={{width: "fit-content", background: "#dcf8c6", padding: "2px 10px", fontSize: "16px", borderRadius: "10px", height: "fit-content", marginBottom: "10px"}}>
+                                        {message.message}<span style={{fontSize: "10px", marginLeft: "10px"}}>{message.timestamp}</span>
+                                    </p>
+                                </div>
+                            )
                         }
-                    )
-                }
+                    }
+                )
+            }
+            <div ref={Ref}></div>
             </div>
 
             {/* chat footer */}
