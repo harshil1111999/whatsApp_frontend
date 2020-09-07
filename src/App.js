@@ -10,11 +10,7 @@ function App() {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-<<<<<<< HEAD
     axios.get('/messages/sync')
-=======
-    axios.get('http://localhost:9000/messages/sync')
->>>>>>> ae7ceab89c29dd2cd0d3d69722ea7fcb0a8bb5ef
     .then(res => {
       setMessages(res.data)
     }).catch(err => console.log(err))
