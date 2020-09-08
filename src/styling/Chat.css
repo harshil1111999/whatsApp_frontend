@@ -1,0 +1,27 @@
+@media screen and (max-width: 500px) {
+    .chat {
+        flex: 1 !important;
+    }
+
+    .chat__header {
+        flex-direction: column;
+    }
+
+    .chat__icons__laptop {
+        display: none !important;
+    }
+
+    .chat__icons__phones {
+        display: block;
+    }
+
+    .chat__roomIcon {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .chat__icons__phones {
+        display: none !important;
+    }
+}

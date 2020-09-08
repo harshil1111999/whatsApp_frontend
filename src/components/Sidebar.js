@@ -7,9 +7,15 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
 
-function Sidebar() {
+function Sidebar({ setVisible, setUser }) {
+
+    const handleClick = () => {
+        localStorage.removeItem('user')
+        setUser({})
+    }
+
     return (
-        <div className="is-flex" style={{flex: 0.35, flexDirection: "column"}}>
+        <div className="is-flex sidebar" style={{flex: 0.35, flexDirection: "column"}}>
             
             {/* header */}
             <div className="is-flex" style={{justifyContent: "space-between", padding: "10px", borderRight: "1px solid lightgrey", width: "100%"}}>
@@ -23,9 +29,16 @@ function Sidebar() {
                     <IconButton>
                         <ChatIcon />
                     </IconButton>
-                    <IconButton>
-                        <MoreVertIcon />
-                    </IconButton>
+                    <div className="dropdown is-hoverable">
+                        <div className="dropdown-trigger">
+                            <IconButton className="navbar-link is-arrowless"><MoreVertIcon/></IconButton>
+                        </div>
+                        <div className="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div className="dropdown-content" style={{width: "70px"}}>
+                                <button onClick={handleClick} style={{width: "100%", height: "100%", cursor: "pointer", border: "none", background: "transparent", outline: "0px"}}>Logout</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -41,9 +54,9 @@ function Sidebar() {
 
             {/* sidebarchat */}
             <div className="is-flex" style={{flexDirection: "column", background: "white", flex: 1, overflow: "auto", marginBottom: "5px"}}>
-                <SidebarChat />
-                <SidebarChat />
-                <SidebarChat />
+                <SidebarChat setVisible={setVisible}/>
+                <SidebarChat setVisible={setVisible}/>
+                <SidebarChat setVisible={setVisible}/>
             </div>
 
         </div>

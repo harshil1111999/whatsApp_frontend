@@ -1,3 +1,7 @@
 .sidebarchat:hover {
     background-color: #ebebeb;
 }
+
+@media screen and (max-width: 500px) {
+    
+}

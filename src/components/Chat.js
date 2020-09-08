@@ -9,8 +9,9 @@ import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import MicIcon from '@material-ui/icons/Mic';
 import SendIcon from '@material-ui/icons/Send';
 import axios from '../axios';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-function Chat({messages}) {
+function Chat({messages, setVisible}) {
     
     const [text, setText] = useState('')
 
@@ -37,10 +38,10 @@ function Chat({messages}) {
     }
 
     return (
-        <div className="is-flex" style={{flex: 0.65, flexDirection: "column", paddingRight: "10px"}}>
+        <div className="is-flex chat" style={{flex: 0.65, flexDirection: "column"}}>
 
             {/* chat header */}
-            <div className="is-flex" style={{width: "100%", justifyContent: "space-between", alignItems: "flex-start", padding: "10px", borderBottom: "1px solid lightgrey", height: "fit-content"}}>
+            <div className="is-flex chat__header" style={{width: "100%", justifyContent: "space-between", alignItems: "flex-start", padding: "10px", borderBottom: "1px solid lightgrey", height: "fit-content"}}>
                 <div className="is-flex" style={{alignItems: "center"}}>
                     <Avatar />
                     <div className="is-flex" style={{flexDirection: "column", marginLeft: "20px"}}>
@@ -48,7 +49,13 @@ function Chat({messages}) {
                         <p style={{color: "gray"}}>Last seen at...</p>
                     </div>
                 </div>
-                <div className="is-flex">
+                <div className="is-flex chat__icons__laptop">
+                    <IconButton><SearchOutlinedIcon/></IconButton>
+                    <IconButton><AttachFileIcon/></IconButton>
+                    <IconButton><MoreVertIcon/></IconButton>
+                </div>
+                <div className="is-flex chat__icons__phones" style={{width: "100%"}}>
+                    <IconButton className="chat__roomIcon" style={{marginRight: "auto"}}><ArrowBackIcon onClick={() => setVisible(true)}/></IconButton>
                     <IconButton><SearchOutlinedIcon/></IconButton>
                     <IconButton><AttachFileIcon/></IconButton>
                     <IconButton><MoreVertIcon/></IconButton>
@@ -56,7 +63,7 @@ function Chat({messages}) {
             </div>
 
             {/* chat body */}
-            <div className="is-flex" style={{backgroundImage: `url(${background})`, flex: 1, padding: "30px", flexDirection: "column", overflow: "auto"}}>
+            <div className="is-flex" style={{backgroundImage: `url(${background})`, flex: 1, padding: "0px 20px", flexDirection: "column", overflow: "auto"}}>
             {
                 messages.map(message => {
                         if(message.received) {
@@ -85,7 +92,7 @@ function Chat({messages}) {
             </div>
 
             {/* chat footer */}
-            <div className="is-flex" style={{alignItems: "center", justifyContent: "space-between", background: "white", borderRadius: "20px",margin: "5px 0", marginLeft: "10px"}}> 
+            <div className="is-flex" style={{alignItems: "center", justifyContent: "space-between", background: "white", borderRadius: "20px",margin: "5px 10px"}}> 
                 <IconButton><InsertEmoticonIcon /></IconButton>
                 <form className="is-flex" style={{flex: 1}} onSubmit={sendMessage}>
                     <input placeholder="Write a message..." value={text} onChange={(e) => setText(e.target.value)} type="text" style={{width: "100%", outlineWidth: 0, border: "none", fontSize: "16px"}}/>
