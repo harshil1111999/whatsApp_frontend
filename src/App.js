@@ -3,6 +3,7 @@ import Home from './components/Home'
 import axios from "./axios";
 import { useForm } from "react-hook-form"
 import './app.css'
+import { Base64 } from 'js-base64';
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
 
     const onSubmit = async (value) => {
         const temp = { number: value.number, 
-            password: value.password}
+            password: Base64.encode(value.password)}
         let res
         if(clicked === "signup") {
             temp.name = value.name
