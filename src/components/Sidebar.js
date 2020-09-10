@@ -73,6 +73,7 @@ function Sidebar({ setVisible, setUser, user, setRoomId }) {
     return (
         <div className="is-flex sidebar" style={{flex: 0.35, flexDirection: "column"}}>
             {/* header */}
+            {console.log(rooms)}
             <div className="is-flex" style={{justifyContent: "space-between", padding: "10px", borderRight: "1px solid lightgrey", width: "100%"}}>
                 <div className="container">
                     <Avatar />

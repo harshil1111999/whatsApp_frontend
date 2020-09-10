@@ -45,6 +45,7 @@ function Home({setUser, user}) {
     const channel = pusher.subscribe('messages');
     channel.bind('updated', function(data) {
       if(!isEmpty(data)) {
+        console.log(data)
         setMessages([...messages, data])
       } else {
         setMessages([...messages])
