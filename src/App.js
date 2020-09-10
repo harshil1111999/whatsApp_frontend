@@ -4,6 +4,8 @@ import axios from "./axios";
 import { useForm } from "react-hook-form"
 import './app.css'
 import { Base64 } from 'js-base64';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -24,7 +26,9 @@ function App() {
 
     useEffect(() => {
         if(!isEmpty(localStorage.getItem('user'))) {
-            setUser(localStorage.getItem('user'))
+            axios.get(`/user/${localStorage.getItem('user')}`)
+            .then(res => setUser(res.data))
+            .catch(err => console.log(err))
         }
     },[])
 
@@ -39,13 +43,17 @@ function App() {
         else {
             res = await axios.post('/login', temp)
         }
-        setUser(res.data)
-        localStorage.setItem('user', res.data.name)
-        console.log(res.data)
+        if(res.data === "Please enter correct password!") {
+            toast.error("Please enter correct password!")
+        } else {
+            setUser(res.data)
+            localStorage.setItem('user', res.data.number)
+            toast.info("You have successfully loged in!")
+        }
     }
 
     if(!isEmpty(user)) {
-        return <Home setUser={setUser}/>
+        return <Home setUser={setUser} user={user}/>
     }
 
     return (
@@ -211,6 +219,7 @@ function App() {
                     </form>
                 </div>
             </div>
+            <ToastContainer position="bottom-right"/>
         </div>
     )
 }
