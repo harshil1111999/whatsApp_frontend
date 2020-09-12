@@ -12,13 +12,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import axios from '../axios';
 import bson from 'bson'
 
-function Sidebar({ setVisible, setUser, user, setRoomId }) {
+function Sidebar({ setVisible, setUser, user, setRoomId, rooms, setRooms }) {
 
     const [show, setShow] = useState("")
     const [people, setPeople] = useState(new Set())
     const { register, errors, handleSubmit } = useForm();
     const [count, setCount] = useState(0)
-    const [rooms, setRooms] = useState(user.rooms)
 
     const handleClick = () => {
         localStorage.removeItem('user')
@@ -48,7 +47,7 @@ function Sidebar({ setVisible, setUser, user, setRoomId }) {
         temp.peoples = peoples
         if(peoples.length > 1) {
             axios.post('/createRoom', temp).then(data => {
-                let temp1 = {_id: id, roomName: values.roomName, lastMessage: ""}
+                let temp1 = {_id: id, roomName: values.roomName}
                 setRooms([...rooms, temp1])
                 setShow("")
                 setCount(0)
@@ -73,7 +72,7 @@ function Sidebar({ setVisible, setUser, user, setRoomId }) {
     return (
         <div className="is-flex sidebar" style={{flex: 0.35, flexDirection: "column"}}>
             {/* header */}
-            {console.log(rooms)}
+            {/* {console.log(rooms)} */}
             <div className="is-flex" style={{justifyContent: "space-between", padding: "10px", borderRight: "1px solid lightgrey", width: "100%"}}>
                 <div className="container">
                     <Avatar />
@@ -115,7 +114,7 @@ function Sidebar({ setVisible, setUser, user, setRoomId }) {
                     <p className="subtitle" style={{marginLeft: "20px"}}>Create Room</p>
                 </div>
                 {
-                    rooms?.map(room => <SidebarChat setVisible={setVisible} room={room} setRoomId={setRoomId}/>)
+                    rooms?.map(room => <SidebarChat key={room._id} setVisible={setVisible} room={room} setRoomId={setRoomId}/>)
                 }
             </div>
 

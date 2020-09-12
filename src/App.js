@@ -64,7 +64,7 @@ function App() {
                     <div id="logo" className="is-flex" style={{alignItems: "center", justifyContent: "center", marginRight: "20px"}}>
                         <img src="logo.png" width="50px" height="50px" alt="logo"/>
                     </div>
-                    <h1 className="title" style={{fontSize: "50px", textAlign: "center"}}>Welcome to the whatsApp!</h1>
+                    <h1 className="title" style={{fontSize: "50px", textAlign: "center"}}>Welcome to the Chit-Chat!</h1>
                 </div>
             </div>
             <div className="box is-flex" style={{margin: "20px", flexDirection: "column", alignItems: "center"}}>

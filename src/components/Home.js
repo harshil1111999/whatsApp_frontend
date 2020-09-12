@@ -12,6 +12,7 @@ function Home({setUser, user}) {
   const [visible, setVisible] = useState(true)
   const [roomId, setRoomId] = useState("")
   const [fetched, setFetched] = useState(false)
+  const [rooms, setRooms] = useState(user.rooms)
 
   function isEmpty(obj) {
     for(var key in obj) {
@@ -45,8 +46,12 @@ function Home({setUser, user}) {
     const channel = pusher.subscribe('messages');
     channel.bind('updated', function(data) {
       if(!isEmpty(data)) {
-        console.log(data)
         setMessages([...messages, data])
+        let temp = rooms.filter(room => room._id === roomId)[0]
+        temp.lastMessage = data.text
+        let updatedRooms = rooms.filter(room => room._id !== roomId)
+        updatedRooms.push(temp)
+        setRooms(updatedRooms)
       } else {
         setMessages([...messages])
       }
@@ -64,12 +69,12 @@ function Home({setUser, user}) {
     {
       width <= 500 ? (
         <div className="box is-flex" style={{justifyContent: "center", boxShadow: "-1px 4px 20px -4px rgba(0,0,0,0.75)", background: "#ededed", height: "90%", width: "90%", padding: "0"}}>
-          {visible ? <Sidebar setVisible={setVisible} setUser={setUser} user={user} setRoomId={setRoomId}/> : 
+          {visible ? <Sidebar setVisible={setVisible} setUser={setUser} user={user} setRoomId={setRoomId} rooms={rooms} setRooms={setRooms}/> : 
           <Chat roomName={roomName} number={user.number} fetched={fetched} messages={messages} setVisible={setVisible} name={user.name} roomId={roomId}/>}
         </div>
       ) : (
         <div className="box is-flex" style={{justifyContent: "center", boxShadow: "-1px 4px 20px -4px rgba(0,0,0,0.75)", background: "#ededed", height: "90%", width: "90%", padding: "0"}}>
-          <Sidebar setVisible={setVisible} setUser={setUser} user={user} setRoomId={setRoomId}/>
+          <Sidebar setVisible={setVisible} setUser={setUser} user={user} setRoomId={setRoomId} rooms={rooms} setRooms={setRooms}/>
           <Chat roomName={roomName} number={user.number} fetched={fetched} messages={messages} setVisible={setVisible} name={user.name} roomId={roomId}/>
         </div>
       )

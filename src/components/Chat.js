@@ -10,10 +10,13 @@ import MicIcon from '@material-ui/icons/Mic';
 import SendIcon from '@material-ui/icons/Send';
 import axios from '../axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Picker from 'emoji-picker-react';
 
 function Chat({messages, setVisible, roomId, name, fetched, number, roomName}) {
     
     const [text, setText] = useState('')
+
+    const [show, setShow] = useState(false)
 
     const Ref = useRef(null)
 
@@ -22,7 +25,15 @@ function Chat({messages, setVisible, roomId, name, fetched, number, roomName}) {
             Ref.current.scrollIntoView({ behavior: "smooth", block: "end" })
     }
 
-    useEffect(scrollToBottom, [messages, fetched]);
+    useEffect(scrollToBottom, [messages, fetched, show]);
+
+    const onEmojiClick = (event, emojiObject) => {
+        setText(text + emojiObject.emoji)
+    }
+
+    const handleEmojiClick = () => {
+        setShow(prevState => !prevState)
+    }
 
     const sendMessage = (e) => {
         e.preventDefault()
@@ -35,7 +46,10 @@ function Chat({messages, setVisible, roomId, name, fetched, number, roomName}) {
                 "received": false,
                 "number": number
             })
-            .then(setText(''))
+            .then(() => {
+                setText('')
+                setShow(false)
+            })
             .catch(err => console.log(err))
         }
     }
@@ -75,7 +89,7 @@ function Chat({messages, setVisible, roomId, name, fetched, number, roomName}) {
                     messages?.map(message => {
                             if(name !== message.name) {
                                 return (
-                                    <div className="is-flex" style={{flexDirection: "column"}}>
+                                    <div key={message.timestamp} className="is-flex" style={{flexDirection: "column"}}>
                                         <p style={{fontWeight: "bold", height: "fit-content", color: "whitesmoke", fontSize: "16px", marginLeft: "5px"}}>{message.name}</p>
                                         <p style={{width: "fit-content", wordBreak: "break-word", background: "white", padding: "2px 10px", fontSize: "16px", borderRadius: "10px", height: "fit-content", marginBottom: "10px"}}>
                                             {message.text}<span style={{fontSize: "10px", marginLeft: "10px"}}>{message.timestamp}</span>
@@ -84,7 +98,7 @@ function Chat({messages, setVisible, roomId, name, fetched, number, roomName}) {
                                 )            
                             } else {
                                 return (
-                                    <div className="is-flex" style={{flexDirection: "column", marginLeft: "auto"}}>
+                                    <div key={message.timestamp} className="is-flex" style={{flexDirection: "column", marginLeft: "auto"}}>
                                         <p style={{fontWeight: "bold", height: "fit-content", color: "whitesmoke", fontSize: "16px", marginLeft: "5px"}}>{message.name}</p>
                                         <p style={{width: "fit-content", wordBreak: "break-word", background: "#dcf8c6", padding: "2px 10px", fontSize: "16px", borderRadius: "10px", height: "fit-content", marginBottom: "10px"}}>
                                             {message.text}<span style={{fontSize: "10px", marginLeft: "10px"}}>{message.timestamp}</span>
@@ -99,11 +113,14 @@ function Chat({messages, setVisible, roomId, name, fetched, number, roomName}) {
                 </div>
 
                 {/* chat footer */}
+                {
+                    show ? <Picker onEmojiClick={onEmojiClick} preload={false}/> : ""
+                }
                 <div className="is-flex" style={{alignItems: "center", justifyContent: "space-between", background: "white", borderRadius: "20px",margin: "5px 10px"}}> 
-                    <IconButton><InsertEmoticonIcon /></IconButton>
+                    <IconButton onClick={handleEmojiClick}><InsertEmoticonIcon /></IconButton>
                     <form className="is-flex" style={{flex: 1}} onSubmit={sendMessage}>
                         <input placeholder="Write a message..." value={text} onChange={(e) => setText(e.target.value)} type="text" style={{width: "100%", outlineWidth: 0, border: "none", fontSize: "16px"}}/>
-                        <IconButton><SendIcon onClick={sendMessage}/></IconButton>
+                        <IconButton onClick={sendMessage}><SendIcon/></IconButton>
                         <IconButton><MicIcon /></IconButton>
                     </form>
                 </div>

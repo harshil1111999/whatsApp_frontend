@@ -1,3 +1,8 @@
+aside.emoji-picker-react {
+    width: 100% !important; 
+    height: 40% !important;
+}
+
 @media screen and (max-width: 500px) {
     .chat {
         flex: 1 !important;
